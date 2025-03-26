@@ -61,6 +61,9 @@ perf_eval <- function(search_path,
                       y_test = refmodel_fulldata$y[indices_test],
                       y_oscale_test = refmodel_fulldata$y_oscale[indices_test],
                       ...) {
+  # Modification introduced for leaf miner analysis; this makes sure that the
+  # CV fold's enclosed individual-level parameters are used instead of the full data's version
+  refmodel_fulldata$family <- refmodel$family
   if (!refit_prj) {
     p_ref <- search_path$p_sel
     # In this case, simply fetch the already computed projections, so don't
