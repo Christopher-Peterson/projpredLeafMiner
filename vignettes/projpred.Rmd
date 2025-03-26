@@ -26,14 +26,14 @@ What is special about the projection predictive variable selection is that it no
 The projection predictive variable selection is based on the ideas of @goutis_model_1998 and @dupuis_variable_2003.
 The methods implemented in **projpred** are described in detail in @piironen_projective_2020, @catalina_projection_2022, @weber_projection_2024, and @catalina_latent_2021.
 A comparison to many other methods may also be found in @piironen_comparison_2017.
-For details on how to cite **projpred**, see the [projpred citation info](https://CRAN.R-project.org/package=projpred/citation.html) on CRAN^[The citation information can be accessed offline by typing `print(citation("projpred"), bibtex = TRUE)` within R.].
+For details on how to cite **projpred**, see the [projpred citation info](https://CRAN.R-project.org/package=projpred/citation.html) on CRAN^[The citation information can be accessed offline by typing `print(citation("projpredLeafMiner"), bibtex = TRUE)` within R.].
 
 ## Data
 
 For this vignette, we use **projpred**'s `df_gaussian` data.
 It contains 100 observations of 20 continuous predictor variables `X1`, ..., `X20` (originally stored in a sub-matrix; we turn them into separate columns below) and one continuous response variable `y`.
 ```{r data}
-data("df_gaussian", package = "projpred")
+data("df_gaussian", package = "projpredLeafMiner")
 dat_gauss <- data.frame(y = df_gaussian$y, df_gaussian$x)
 ```
 

@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // glm_elnet_c
 List glm_elnet_c(arma::mat x, Function pseudo_obs, arma::vec lambda, double alpha, bool intercept, arma::vec penalty, double thresh, int qa_updates_max, int pmax, bool pmax_strict, arma::vec beta, double beta0, arma::vec w0, int as_updates_max);
-RcppExport SEXP _projpred_glm_elnet_c(SEXP xSEXP, SEXP pseudo_obsSEXP, SEXP lambdaSEXP, SEXP alphaSEXP, SEXP interceptSEXP, SEXP penaltySEXP, SEXP threshSEXP, SEXP qa_updates_maxSEXP, SEXP pmaxSEXP, SEXP pmax_strictSEXP, SEXP betaSEXP, SEXP beta0SEXP, SEXP w0SEXP, SEXP as_updates_maxSEXP) {
+RcppExport SEXP _projpredLeafMiner_glm_elnet_c(SEXP xSEXP, SEXP pseudo_obsSEXP, SEXP lambdaSEXP, SEXP alphaSEXP, SEXP interceptSEXP, SEXP penaltySEXP, SEXP threshSEXP, SEXP qa_updates_maxSEXP, SEXP pmaxSEXP, SEXP pmax_strictSEXP, SEXP betaSEXP, SEXP beta0SEXP, SEXP w0SEXP, SEXP as_updates_maxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // glm_ridge_c
 List glm_ridge_c(arma::mat x, Function pseudo_obs, double lambda, bool intercept, arma::vec penalty, arma::vec beta_init, arma::vec w_init, double thresh, int qa_updates_max, int ls_iter_max, bool debug);
-RcppExport SEXP _projpred_glm_ridge_c(SEXP xSEXP, SEXP pseudo_obsSEXP, SEXP lambdaSEXP, SEXP interceptSEXP, SEXP penaltySEXP, SEXP beta_initSEXP, SEXP w_initSEXP, SEXP threshSEXP, SEXP qa_updates_maxSEXP, SEXP ls_iter_maxSEXP, SEXP debugSEXP) {
+RcppExport SEXP _projpredLeafMiner_glm_ridge_c(SEXP xSEXP, SEXP pseudo_obsSEXP, SEXP lambdaSEXP, SEXP interceptSEXP, SEXP penaltySEXP, SEXP beta_initSEXP, SEXP w_initSEXP, SEXP threshSEXP, SEXP qa_updates_maxSEXP, SEXP ls_iter_maxSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,12 +58,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_projpred_glm_elnet_c", (DL_FUNC) &_projpred_glm_elnet_c, 14},
-    {"_projpred_glm_ridge_c", (DL_FUNC) &_projpred_glm_ridge_c, 11},
+    {"_projpredLeafMiner_glm_elnet_c", (DL_FUNC) &_projpredLeafMiner_glm_elnet_c, 14},
+    {"_projpredLeafMiner_glm_ridge_c", (DL_FUNC) &_projpredLeafMiner_glm_ridge_c, 11},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_projpred(DllInfo *dll) {
+RcppExport void R_init_projpredLeafMiner(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

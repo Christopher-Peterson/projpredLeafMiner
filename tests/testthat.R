@@ -1,4 +1,4 @@
 library(testthat)
 library(projpred)
 
-test_check("projpred")
+test_check("projpredLeafMiner")

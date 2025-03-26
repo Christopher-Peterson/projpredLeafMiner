@@ -491,7 +491,7 @@ varsel.refmodel <- function(object, d_test = NULL, method = "forward",
               nprjdraws_search = search_path$p_sel$nprjdraws,
               nprjdraws_eval = perf_eval_out[["nprjdraws"]],
               refit_prj,
-              projpred_version = utils::packageVersion("projpred"))
+              projpred_version = utils::packageVersion("projpredLeafMiner"))
   class(vs) <- "vsel"
 
   return(vs)

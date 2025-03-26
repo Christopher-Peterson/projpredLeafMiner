@@ -28,19 +28,19 @@ models can also be used. Details on supported model types are given in section
 ["Supported types of
 models"](https://mc-stan.org/projpred/articles/projpred.html#modtypes) of the
 main vignette^[The main vignette can be accessed offline by typing
-`vignette(topic = "projpred", package = "projpred")` or---more
-conveniently---`browseVignettes("projpred")` within R.].
+`vignette(topic = "projpredLeafMiner", package = "projpredLeafMiner")` or---more
+conveniently---`browseVignettes("projpredLeafMiner")` within R.].
 
 For details on how to cite **projpred**, see the [projpred citation
 info](https://CRAN.R-project.org/package=projpred/citation.html) on CRAN^[The
 citation information can be accessed offline by typing
-`print(citation("projpred"), bibtex = TRUE)` within R.]. Further references
+`print(citation("projpredLeafMiner"), bibtex = TRUE)` within R.]. Further references
 (including earlier work that **projpred** is based on) are given in section
 ["Introduction"](https://mc-stan.org/projpred/articles/projpred.html#introduction)
 of the main vignette.
 
 The [vignettes](https://mc-stan.org/projpred/articles/)^[The overview of all
-vignettes can be accessed offline by typing `browseVignettes("projpred")` within
+vignettes can be accessed offline by typing `browseVignettes("projpredLeafMiner")` within
 R.] illustrate how to use the **projpred** functions in conjunction. Details on
 the **projpred** functions as well as some shorter examples may be found in the
 [documentation](https://mc-stan.org/projpred/reference/index.html)^[The
@@ -56,7 +56,7 @@ recent than the CRAN version, but the CRAN version might be more stable.
 ### From CRAN
 
 ```r
-install.packages("projpred")
+install.packages("projpredLeafMiner")
 ```
 
 ### From GitHub

@@ -41,7 +41,7 @@ stable.
 ### From CRAN
 
 ``` r
-install.packages("projpred")
+install.packages("projpredLeafMiner")
 ```
 
 ### From GitHub
@@ -60,14 +60,14 @@ devtools::install_github("stan-dev/projpred", build_vignettes = TRUE)
 To save time, you may omit `build_vignettes = TRUE`.
 
 [^1]: The main vignette can be accessed offline by typing
-    `vignette(topic = "projpred", package = "projpred")` or—more
-    conveniently—`browseVignettes("projpred")` within R.
+    `vignette(topic = "projpredLeafMiner", package = "projpredLeafMiner")` or—more
+    conveniently—`browseVignettes("projpredLeafMiner")` within R.
 
 [^2]: The citation information can be accessed offline by typing
-    `print(citation("projpred"), bibtex = TRUE)` within R.
+    `print(citation("projpredLeafMiner"), bibtex = TRUE)` within R.
 
 [^3]: The overview of all vignettes can be accessed offline by typing
-    `browseVignettes("projpred")` within R.
+    `browseVignettes("projpredLeafMiner")` within R.
 
 [^4]: The documentation can be accessed offline using `?` or `help()`
     within R.

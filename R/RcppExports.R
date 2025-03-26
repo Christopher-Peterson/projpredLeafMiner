@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 glm_elnet_c <- function(x, pseudo_obs, lambda, alpha, intercept, penalty, thresh, qa_updates_max, pmax, pmax_strict, beta, beta0, w0, as_updates_max = 50L) {
-    .Call('_projpred_glm_elnet_c', PACKAGE = 'projpred', x, pseudo_obs, lambda, alpha, intercept, penalty, thresh, qa_updates_max, pmax, pmax_strict, beta, beta0, w0, as_updates_max)
+    .Call('_projpredLeafMiner_glm_elnet_c', PACKAGE = 'projpredLeafMiner', x, pseudo_obs, lambda, alpha, intercept, penalty, thresh, qa_updates_max, pmax, pmax_strict, beta, beta0, w0, as_updates_max)
 }
 
 glm_ridge_c <- function(x, pseudo_obs, lambda, intercept, penalty, beta_init, w_init, thresh, qa_updates_max, ls_iter_max = 100L, debug = FALSE) {
-    .Call('_projpred_glm_ridge_c', PACKAGE = 'projpred', x, pseudo_obs, lambda, intercept, penalty, beta_init, w_init, thresh, qa_updates_max, ls_iter_max, debug)
+    .Call('_projpredLeafMiner_glm_ridge_c', PACKAGE = 'projpredLeafMiner', x, pseudo_obs, lambda, intercept, penalty, beta_init, w_init, thresh, qa_updates_max, ls_iter_max, debug)
 }
 
