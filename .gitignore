@@ -13,3 +13,4 @@ tests/testthat/_snaps
 
 docs/dev
 dev
+*.tar.gz

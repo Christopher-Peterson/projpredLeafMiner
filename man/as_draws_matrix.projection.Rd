@@ -6,9 +6,9 @@
 \title{Extract projected parameter draws and coerce to \code{draws_matrix} (see package
 \pkg{posterior})}
 \usage{
-\method{as_draws_matrix}{projection}(x, ...)
+as_draws_matrix.projection(x, ...)
 
-\method{as_draws}{projection}(x, ...)
+as_draws.projection(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{projection} (returned by \code{\link[=project]{project()}}, possibly
@@ -36,7 +36,7 @@ these weights (safer in contrast to the matrix returned by
 }
 \details{
 In case of the augmented-data projection for a multilevel submodel
-of a \code{\link[brms:brmsfamily]{brms::categorical()}} reference model, the multilevel parameters (and
+of a \code{\link[brms:categorical]{brms::categorical()}} reference model, the multilevel parameters (and
 therefore also their names) slightly differ from those in the \pkg{brms}
 reference model fit (see section "Augmented-data projection" in
 \code{\link[=extend_family]{extend_family()}}'s documentation).
