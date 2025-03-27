@@ -1335,7 +1335,6 @@ kfold_varsel <- function(refmodel, method, nterms_max, ndraws, nclusters,
       dis = fold$refmodel$dis,
       cl_ref = seq_along(fold$refmodel$wdraws_ref)
     )
-
     return(nlist(predictor_ranking = search_path[["predictor_ranking"]],
                  summaries_sub = perf_eval_out[["sub_summaries"]],
                  summaries_ref, clust_used_eval = perf_eval_out[["clust_used"]],
@@ -1394,6 +1393,21 @@ kfold_varsel <- function(refmodel, method, nterms_max, ndraws, nclusters,
   clust_used_eval <- element_unq(res_cv, nm = "clust_used_eval")
   nprjdraws_eval <- element_unq(res_cv, nm = "nprjdraws_eval")
 
+  #' Helper function to convert the lppd into a list-vector
+  #' @param fold_list is sub_foldwise or ref
+  #' @param cv_fit_list is list_cv or a longer version
+  chop_oscale_lppd = \(fold_list, cvfit_list) {
+    map2(fold_list, cvfit_list, \(subfold, cv_ref) {
+      omitted = cv_ref$omitted
+      n_ind = cv_ref$refmodel$fit$mu_year_site$n_ind[omitted]
+      end = cumsum(n_ind)
+      start = dplyr::lag(end, default = 0) + 1
+      out_list = map2(start, end, \(s,e) subfold$oscale$lppd[s:e])
+      subfold$oscale$lppd=out_list
+      subfold
+    })
+  }
+
   # Handle the submodels' performance evaluation results:
   sub_foldwise <- lapply(res_cv, "[[", "summaries_sub")
   if (getRversion() >= package_version("4.2.0")) {
@@ -1406,6 +1420,15 @@ kfold_varsel <- function(refmodel, method, nterms_max, ndraws, nclusters,
       dim(sub_foldwise) <- rev(sub_dim)
     }
   }
+
+  sub_foldwise = local({
+    sfw_dim = dim(sub_foldwise)
+    fold_index = rep(1:sfw_dim[2], each = sfw_dim[1])
+    subfold_out =  chop_oscale_lppd(sub_foldwise, list_cv[fold_index])
+    dim(subfold_out) = sfw_dim
+    subfold_out
+  })
+
   sub <- apply(sub_foldwise, 1, rbind2list)
   idxs_sorted_by_fold <- unlist(lapply(list_cv, function(fold) {
     fold$omitted
@@ -1433,7 +1456,8 @@ kfold_varsel <- function(refmodel, method, nterms_max, ndraws, nclusters,
   })
 
   # Handle the reference model's performance evaluation results:
-  ref <- rbind2list(lapply(res_cv, "[[", "summaries_ref"))
+  ref = lapply(res_cv, "[[", "summaries_ref") |>
+    chop_oscale_lppd(list_cv) |> rbind2list()
   ref$mu <- ref$mu[order(idxs_sorted_by_fold_flx)]
   ref$lppd <- ref$lppd[order(idxs_sorted_by_fold)]
   if (!is.null(ref$oscale)) {

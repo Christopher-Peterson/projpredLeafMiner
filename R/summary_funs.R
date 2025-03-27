@@ -106,6 +106,7 @@ weighted_summary_means <- function(y_wobs_test, family, wdraws, mu, dis, cl_ref,
     stop("`resp_oscale = FALSE` can only be used in case of the latent ",
          "projection.")
   }
+
   if (varsel$refmodel$family$for_latent) {
     if (resp_oscale) {
       summaries_ref <- summaries_ref$oscale
@@ -222,8 +223,8 @@ weighted_summary_means <- function(y_wobs_test, family, wdraws, mu, dis, cl_ref,
     }
     delta <- TRUE
   }
-
   for (s in seq_along(stats)) {
+
     stat <- stats[s]
 
     ## reference model statistics
@@ -289,7 +290,7 @@ get_stat <- function(summaries, summaries_baseline = NULL,
                      summaries_fast = NULL, loo_inds = NULL,
                      y_wobs_test, stat, alpha = 0.1, ...) {
   mu <- summaries$mu
-  lppd <- summaries$lppd
+  lppd <- summaries$lppd |> unlist()
   n_full <- length(lppd)
   n_loo <- if (is.null(loo_inds)) n_full else length(loo_inds)
   alpha_half <- alpha / 2
@@ -299,7 +300,7 @@ get_stat <- function(summaries, summaries_baseline = NULL,
     if (is.null(summaries_baseline)) {
       lppd_baseline <- 0
     } else {
-      lppd_baseline <- summaries_baseline$lppd
+      lppd_baseline <- summaries_baseline$lppd |> unlist()
     }
     if (n_loo < n_full) {
       # subsampling difference estimator (Magnusson et al., 2020)

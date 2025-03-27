@@ -576,6 +576,7 @@ deparse_combine <- function(x, max_char = NULL) {
 
 # Helper function to combine separate `list`s into a single `list`:
 rbind2list <- function(x) {
+  # This is ONLY used in cv_varsel
   is_augeval <- any(sapply(x, function(x_i) {
     is.list(x_i) &&
       identical(names(x_i), c("mu", "lppd")) &&
@@ -593,9 +594,10 @@ rbind2list <- function(x) {
       rbind2list(lapply(x, "[", "lppd"))
     ))
   }
-  binded_list <- as.list(do.call(rbind, lapply(x, function(x_i) {
-    as.data.frame(x_i[setdiff(names(x_i), "oscale")])
-  })))
+  # This is the issue when called on 'oscale'
+  binded_list <- purrr::map_dfr(x, \(x_i) {
+    tibble::as_tibble(x_i[setdiff(names(x_i), "oscale")])
+  }) |> as.list()
   is_lateval_oscale <- any(sapply(x, function(x_i) {
     is.list(x_i) &&
       identical(names(x_i), c("mu", "lppd", "oscale"))
