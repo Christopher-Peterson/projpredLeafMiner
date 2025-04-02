@@ -14,7 +14,7 @@ extract_terms_response <- function(formula) {
   global_intercept <- attr(tt, "intercept") == 1
   offs_attr <- attr(tt, "offset")
 
-  if (response) {
+  if (response_idx) {
     response <- allterms_[response_idx]
   } else {
     response <- NA
