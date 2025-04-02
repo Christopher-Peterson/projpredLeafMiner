@@ -652,6 +652,12 @@ select_possible_terms_size <- function(chosen, terms, size) {
                terms$additive_terms,
                perl = TRUE)
     ))
+    # If any terms have been excluded that were already chosen, return NA
+      # otherwise, remove excluded terms from x
+    if(length(terms_new$excluded_terms) > 0) {
+      if(any(terms_new$excluded_terms %in% chosen)) return(NA)
+      x <- make_formula(x) |> terms() |> attr('term.labels') |> paste(collapse = ' + ')
+    }
     linear <- terms_new$individual_terms
     dups <- setdiff(linear[!is.na(match(linear, additive))], chosen)
 
