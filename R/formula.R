@@ -10,12 +10,12 @@ extract_terms_response <- function(formula) {
   ## when converting the terms_ to a list the first element is
   ## "list" itself, so we remove it
   allterms_ <- as.list(attr(tt, "variables")[-1])
-  response <- attr(tt, "response")
+  response_idx <- attr(tt, "response")
   global_intercept <- attr(tt, "intercept") == 1
   offs_attr <- attr(tt, "offset")
 
   if (response) {
-    response <- allterms_[response]
+    response <- allterms_[response_idx]
   } else {
     response <- NA
   }
@@ -25,6 +25,8 @@ extract_terms_response <- function(formula) {
   } else {
     offset_terms <- NULL
   }
+  # exclude_terms should correspond w/ minuses
+  excluded_terms = vapply(allterms_[-c(response_idx, offs_attr)], deparse, '') |> setdiff(terms_)
 
   hier <- grepl("\\|", terms_)
   int <- grepl(":", terms_)
@@ -36,6 +38,8 @@ extract_terms_response <- function(formula) {
   individual_terms <- setdiff(individual_terms, additive_terms)
 
   response <- extract_response(response)
+
+
   return(nlist(
     individual_terms,
     interaction_terms,
@@ -43,7 +47,8 @@ extract_terms_response <- function(formula) {
     group_terms,
     response,
     global_intercept,
-    offset_terms
+    offset_terms,
+    excluded_terms
   ))
 }
 
