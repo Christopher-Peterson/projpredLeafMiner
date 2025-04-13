@@ -59,16 +59,17 @@ extract_terms_response <- function(formula) {
 re_wrap_group_terms = \(formula) {
   # Sometimes the parentheses around (1 | group) gets removed, and this breaks a lot of code
   # This function fixes that
-  form_text = as.character(formula)
-  has_hier = grepl('|', form_text[[3]] , fixed = TRUE)
+  form_text = rlang::f_rhs(formula) |> deparse()
+  has_hier = grepl('|', form_text , fixed = TRUE)
   if(!has_hier) return(formula)
   # This assumes no random slopes
   # Random slopes could break this in unexpected ways that I'm not responsible for
   ranef_regex = "1 ?\\| ?[a-zA-Z0-9_]+"
   # Wrap ranefs in parens
-  paren_form = stringr::str_replace_all(form_text[[3]], ranef_regex,
+  paren_form = stringr::str_replace_all(form_text, ranef_regex,
                                         \(z) paste0('(', z, ')'))
-  out = paste(form_text[[2]], form_text[[1]], paren_form) |> as.formula()
+  out = paste('~', paren_form) |> as.formula()
+  if(!is.null(rlang::f_lhs(formula)))  rlang::f_lhs(out) = rlang::f_lhs(formula)
   rlang::f_env(out) = rlang::f_env(formula)
   out
 }
