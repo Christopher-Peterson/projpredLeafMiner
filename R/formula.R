@@ -5,11 +5,14 @@
 ##   terms, response and a boolean global intercept indicating whether the
 ##   intercept is included or not.
 extract_terms_response <- function(formula) {
+  formula = re_wrap_group_terms(formula)
   tt <- terms(formula)
   terms_ <- attr(tt, "term.labels")
   ## when converting the terms_ to a list the first element is
   ## "list" itself, so we remove it
   allterms_ <- as.list(attr(tt, "variables")[-1])
+  # This should be a character vector, but if there's a hierarchical term it is sometimes deparsed?
+
   response_idx <- attr(tt, "response")
   global_intercept <- attr(tt, "intercept") == 1
   offs_attr <- attr(tt, "offset")
@@ -26,6 +29,7 @@ extract_terms_response <- function(formula) {
     offset_terms <- NULL
   }
   # exclude_terms should correspond w/ minuses
+
   excluded_terms = vapply(allterms_[-c(response_idx, offs_attr)], deparse, '') |> setdiff(terms_)
 
   hier <- grepl("\\|", terms_)
@@ -50,6 +54,23 @@ extract_terms_response <- function(formula) {
     offset_terms,
     excluded_terms
   ))
+}
+
+re_wrap_group_terms = \(formula) {
+  # Sometimes the parentheses around (1 | group) gets removed, and this breaks a lot of code
+  # This function fixes that
+  form_text = as.character(formula)
+  has_hier = grepl('|', form_text[[3]] , fixed = TRUE)
+  if(!has_hier) return(formula)
+  # This assumes no random slopes
+  # Random slopes could break this in unexpected ways that I'm not responsible for
+  ranef_regex = "1 ?\\| ?[a-zA-Z0-9_]+"
+  # Wrap ranefs in parens
+  paren_form = stringr::str_replace_all(form_text[[3]], ranef_regex,
+                                        \(z) paste0('(', z, ')'))
+  out = paste(form_text[[2]], form_text[[1]], paren_form) |> as.formula()
+  rlang::f_env(out) = rlang::f_env(formula)
+  out
 }
 
 expand_formula <- function(formula, data) {

@@ -186,7 +186,6 @@ search_forward <- function(p_ref, refmodel, nterms_max, verbose = TRUE,
 #'              search_terms = search_terms_forced, seed = 5555)
 #' # Now see, for example, `?print.vsel`, `?plot.vsel`, `?suggest_size.vsel`,
 #' # and `?ranking` for possible post-processing functions.
-#'
 #' @export
 force_search_terms <- function(forced_terms, optional_terms) {
   stopifnot(length(forced_terms) > 0)
@@ -194,6 +193,36 @@ force_search_terms <- function(forced_terms, optional_terms) {
   forced_terms <- paste(forced_terms, collapse = " + ")
   return(c(forced_terms, paste0(forced_terms, " + ", optional_terms)))
 }
+
+#' A helper function to construct mutually exclusive sets of variables for
+#' argument `search_terms` of [varsel()] or [cv_varsel()]; if one of these terms
+#' is selected, the remainder cannot be.
+#' @param terms a character vector of at least two search terms.
+#' @return A character vector that may be used as input for argument
+#'   `search_terms` of [varsel()] or [cv_varsel()].
+#' @export
+exclusive_search_terms <- function(terms) {
+  stopifnot(length(terms) > 1)
+  vapply(seq_along(terms),  \(i) paste0( '- ',terms[-i], collapse = ' '), '')|>
+    paste(terms, exclude = _)
+}
+#' A helper function to construct dependent search terms for argument
+#' `search_terms` of [varsel()] or [cv_varsel()]
+#' @param ... each element should be a formula, where the left hand side is a prerequisite
+#' term(s) and the right hand side is one or more dependent terms that only appear
+#' if the prerequisite(s) have already been selected.
+#' @export
+dependent_search_terms <- function(...) {
+  dots = list(...)
+  dot_formulas = dots[vapply(dots, \(x) inherits(x, 'formula'), TRUE)]
+  if(length(dot_formulas) == 0) return(character(0))
+  lapply(dot_formulas, \(f) {
+    required = rlang::f_lhs(f) |> as.character()
+    dependent = terms(f) |> attr('term.labels')
+    paste(required, dependent, sep = ' + ')
+    }) |> unlist()
+}
+
 
 search_L1_surrogate <- function(p_ref, d_train, family, intercept, nterms_max,
                                 penalty, search_control) {
